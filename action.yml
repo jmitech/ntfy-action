@@ -1,0 +1,39 @@
+name: ntfy-action
+description: Send a simple message notification via ntfy
+inputs:
+  title:
+    description: Notification title
+    required: false
+  message:
+    description: Notification message (supports \n escapes)
+    required: true
+  tags:
+    description: Notification tags (e.g. test_tube, whale)
+    required: false
+    default: rocket
+
+runs:
+  using: composite
+  steps:
+    - name: Send ntfy message
+      shell: sh
+      run: |
+        set -euo pipefail
+
+        NTFY_AUTH='-H "Authorization: Bearer ${NTFY_TOKEN}"'
+
+        NTFY_MESSAGE=$(printf '%b' "${{ inputs.message }}")
+
+        if [ -n "${{ inputs.title || '' }}" ]; then
+          NTFY_TITLE='-H "Title: ${{ inputs.title }}"'
+        fi
+
+        if [ -n "${{ inputs.tags || '' }}" ]; then
+          NTFY_TAGS='-H "Tags: ${{ inputs.tags }}"'
+        fi
+
+        cmd=$(echo "curl -s $NTFY_AUTH $NTFY_TAGS $NTFY_TITLE -d \"$NTFY_MESSAGE\" $NTFY_URL")
+
+        echo "NTFY: $cmd"
+
+        eval "$cmd" >/dev/null 2>&1
