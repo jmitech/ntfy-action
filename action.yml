@@ -11,6 +11,9 @@ inputs:
     description: Notification tags (e.g. test_tube, whale)
     required: false
     default: rocket
+  actions:
+    description: Notification actions (e.g. "view, Open in Gitea, ${DOCKER_IMAGE_URL}")
+    required: false
 
 runs:
   using: composite
@@ -32,7 +35,11 @@ runs:
           NTFY_TAGS='-H "Tags: ${{ inputs.tags }}"'
         fi
 
-        cmd=$(echo "curl -s $NTFY_AUTH $NTFY_TAGS $NTFY_TITLE -d \"$NTFY_MESSAGE\" $NTFY_URL")
+        if [ -n "${{ inputs.actions || '' }}" ]; then
+          NTFY_ACTIONS='-H "Actions: ${{ inputs.actions }}"'
+        fi
+
+        cmd=$(echo "curl -s $NTFY_AUTH $NTFY_TAGS $NTFY_TITLE $NTFY_ACTIONS -d \"$NTFY_MESSAGE\" $NTFY_URL")
 
         echo "NTFY: $cmd"
 
