@@ -15,7 +15,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Send ntfy message
+    - name: Send simple ntfy message
       shell: sh
       run: |
         set -euo pipefail
