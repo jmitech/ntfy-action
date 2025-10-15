@@ -18,7 +18,7 @@ runs:
     - name: Send simple ntfy message
       shell: sh
       run: |
-        set -euo pipefail
+        set -euo
 
         NTFY_AUTH='-H "Authorization: Bearer ${NTFY_TOKEN}"'
 
