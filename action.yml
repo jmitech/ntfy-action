@@ -1,5 +1,6 @@
-name: ntfy-action
+name: actions/ntfy
 description: Send a simple message notification via ntfy
+
 inputs:
   title:
     description: Notification title
@@ -18,7 +19,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Send simple ntfy message
+    - name: 💬 Send simple ntfy message
       shell: sh
       run: |
         set -euo
