@@ -40,7 +40,7 @@ runs:
           NTFY_ACTIONS='-H "Actions: ${{ inputs.actions }}"'
         fi
 
-        cmd=$(echo "curl -s $NTFY_AUTH $NTFY_TAGS $NTFY_TITLE $NTFY_ACTIONS -d \"$NTFY_MESSAGE\" $NTFY_URL")
+        cmd=$(echo "curl -s $NTFY_AUTH ${NTFY_TAGS:-} ${NTFY_TITLE:-} ${NTFY_ACTIONS:-} -d \"$NTFY_MESSAGE\" $NTFY_URL")
 
         echo "NTFY: $cmd"
 
